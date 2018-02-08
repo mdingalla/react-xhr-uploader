@@ -1,6 +1,6 @@
 const styles = {
   root: {
-    border: '1px solid #CACACA',
+    // border: '1px solid #CACACA',
     padding: 20
   },
   dropTargetStyle: {

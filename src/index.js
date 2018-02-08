@@ -27,7 +27,10 @@ class XHRUploader extends Component {
 
   onFileSelect() {
     const items = this.filesToItems(this.fileInput.files);
-    this.setState({ items }, () => {
+    const currentItems = this.state.items;
+    this.setState({
+      items:currentItems.concat(items)
+    }, () => {
       if (this.props.auto) {
         this.upload();
       }
@@ -184,15 +187,17 @@ class XHRUploader extends Component {
 
   filesToItems(files) {
     const fileItems = Array.prototype.slice.call(files).slice(0, this.props.maxFiles);
+    const maxIndex = this.state.items.length;
+
     const items = fileItems.map((f, i) => {
       if (this.props.chunks) {
         const chunkProgress = [];
         for (let j = 0; j <= f.size / this.props.chunkSize; j += 1) {
           chunkProgress.push(0);
         }
-        return { file: f, index: i, progress: 0, cancelled: false, chunkProgress };
+        return { file: f, index: i + maxIndex, progress: 0, cancelled: false, chunkProgress };
       }
-      return { file: f, index: i, progress: 0, cancelled: false };
+      return { file: f, index: i + maxIndex, progress: 0, cancelled: false };
     });
     return items;
   }
@@ -336,7 +341,7 @@ class XHRUploader extends Component {
     return (
       <div style={styles.root}>
         {this.renderDropTarget()}
-        {this.renderButton()}
+        {/* {this.renderButton()} */}
         {this.renderInput()}
       </div>
     );
